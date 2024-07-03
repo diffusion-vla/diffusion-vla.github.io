@@ -6,20 +6,17 @@
 	export let renderVideos = false;
 
 	const videoNames = [
-		'out_ours_ur5_tiger',
-		'out_cmu',
-		'out_iliad',
-		'out_ours_ur5_cloth',
-		'out_fmb',
-		'out_bridge',
-		'out_rpt',
-		'out_aloha',
-		'out_google'
+		'tennis',
+		'mug',
+		'drawer',
+		'box',
+		'transfer_bread',
+		'stack_cube'
 	];
 
 	const videoData = videoNames.map((name) => ({
-		src: `videos/${name}.mp4`,
-		image_src: `videos/${name}.jpg`,
+		src: `videos/origin_tasks/${name}.mp4`,
+		image_src: `videos/origin_tasks/${name}.png`,
 		text: name.replaceAll('-', ' ')
 	}));
 
@@ -69,9 +66,9 @@
 								poster="{base}/{video.image_src}"
 							/>
 							<span
-								class="absolute bottom-0.5 right-3 bg-slate-100 bg-opacity-50 text-stone-700 text-s px-1 rounded-md"
+								class="absolute bottom-0.5 right-3 bg-slate-100 bg-opacity-85 text-stone-700 text-s px-1 rounded-md"
 							>
-								2x
+								5x
 							</span>
 						</div>
 					</div>
@@ -92,6 +89,6 @@
 		background: rgb(51, 51, 51);
 	}
 	:global(.splide__pagination__page.is-active) {
-		background: black;
+		background: rgb(185, 85, 85);
 	}
 </style>

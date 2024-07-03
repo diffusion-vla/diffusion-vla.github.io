@@ -2,7 +2,7 @@
 	import { slide } from 'svelte/transition';
 	import { sineInOut } from 'svelte/easing';
 	import { createEventDispatcher, onMount } from 'svelte';
-	import Octo from './Octo.svelte';
+	import DiffusionVLA from './dvla.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -25,7 +25,7 @@
 >
 	<div class="mx-4 md:mx-16 flex flex-col justify-center pb-32">
 		<h1 class="leading-tight transition-all duration-1000 font-light">
-			<span class="font-bold"><Octo reverse={true} />:</span> An Open-Source Generalist Robot Policy
+			<span class="font-bold"><DiffusionVLA reverse={false} />:</span> Aligning Vision-Language Models with Diffusion Policy for Visuomotor Learning
 		</h1>
 	</div>
 	<div class="h-32 w-full absolute bottom-0">
@@ -81,7 +81,7 @@
 		</svg>
 
 		<h2 class="leading-tight font-medium text-center mt-4 px-2 md:px-8">
-			<span class="font-bold"><Octo reverse={true} />:</span> An Open-Source Generalist Robot Policy
+			<span class="font-bold"><DiffusionVLA reverse={false} />:</span> Aligning Vision-Language Models with Diffusion Policy for Visuomotor Learning
 		</h2>
 	</div>
 {/if}

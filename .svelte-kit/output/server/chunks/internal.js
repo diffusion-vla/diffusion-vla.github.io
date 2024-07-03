@@ -97,7 +97,7 @@ const options = {
   root: Root,
   service_worker: false,
   templates: {
-    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n\n<head>\n	<meta charset="utf-8" />\n	<meta name="viewport" content="width=device-width, initial-scale=1">\n	<link rel="icon" type="image/png" href="/octo.png">\n\n	<meta name="twitter:card" content="summary_large_image">\n	<meta name="twitter:title" content="Octo: An Open-Source Generalist Robot Policy">\n	<meta name="twitter:image" content="https://octo-models.github.io/card.jpg">\n\n	<title>🐙 Octo: An Open-Source Generalist Robot Policy</title>\n	' + head + '\n</head>\n\n<body data-sveltekit-preload-data="hover">\n	<div style="display: contents">' + body + "</div>\n</body>\n\n</html>",
+    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n\n<head>\n	<meta charset="utf-8" />\n	<meta name="viewport" content="width=device-width, initial-scale=1">\n	<link rel="icon" type="image/svg+xml" href="/eva.svg" />\n\n	<meta name="twitter:card" content="summary_large_image">\n	<meta name="twitter:title" content="Diffusion-VLA: Aligning Vision-Language Models with Diffusion Policy for Visuomotor Learning">\n	<meta name="twitter:image" content="https://octo-models.github.io/card.jpg">\n\n	<title>Diffusion-VLA: Aligning Vision-Language Models with Diffusion Policy for Visuomotor Learning</title>\n	' + head + '\n</head>\n\n<body data-sveltekit-preload-data="hover">\n	<div style="display: contents">' + body + "</div>\n</body>\n\n</html>",
     error: ({ status, message }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -169,7 +169,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1a2o9p6"
+  version_hash: "1n6lylw"
 };
 function get_hooks() {
   return {};

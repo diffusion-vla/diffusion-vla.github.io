@@ -1,7 +1,7 @@
 <script>
 	import Collapsible from './Collapsible.svelte';
 	import { base } from '$app/paths';
-	import Octo from './Octo.svelte';
+	import DiffusionVLA from './dvla.svelte';
 
 	function lazy(isOpen, path) {
 		return isOpen ? `${base}/videos/${path}.mp4` : '';
@@ -15,7 +15,7 @@
 			<div class="flex flex-col max-w-[500px] mx-2 py-2">
 				<div class="flex justify-center">
 					<div class="flex flex-col">
-						<div class="text-center pb-1 text-sm"><Octo /></div>
+						<div class="text-center pb-1 text-sm"><DiffusionVLA /></div>
 						<div class="rounded-lg overflow-hidden relative">
 							<video
 								disableRemotePlayback
@@ -24,7 +24,7 @@
 								playsinline
 								loop
 								autoplay
-								src={lazy(isOpen, 'out_rpt_octo')}
+								src={lazy(isOpen, 'out_rpt_DiffusionVLA')}
 							/>
 							<span
 								class="absolute bottom-0.5 right-0.5 bg-slate-100 bg-opacity-50 text-stone-700 text-s px-1 rounded-md"
@@ -79,7 +79,7 @@
 			<div class="flex flex-col max-w-[500px] mx-2 py-2">
 				<div class="flex justify-center">
 					<div class="flex flex-col">
-						<div class="text-center pb-1 text-sm"><Octo /></div>
+						<div class="text-center pb-1 text-sm"><DiffusionVLA /></div>
 						<div class="rounded-lg overflow-hidden relative">
 							<video
 								disableRemotePlayback
@@ -88,7 +88,7 @@
 								playsinline
 								loop
 								autoplay
-								src={lazy(isOpen, 'out_google_octo')}
+								src={lazy(isOpen, 'out_google_DiffusionVLA')}
 							/>
 							<span
 								class="absolute bottom-0.5 right-0.5 bg-slate-100 bg-opacity-50 text-stone-700 text-s px-1 rounded-md"
@@ -143,7 +143,7 @@
 			<div class="flex flex-col max-w-[500px] mx-2 py-2">
 				<div class="flex justify-center">
 					<div class="flex flex-col">
-						<div class="text-center pb-1 text-sm"><Octo /></div>
+						<div class="text-center pb-1 text-sm"><DiffusionVLA /></div>
 						<div class="rounded-lg overflow-hidden relative">
 							<video
 								disableRemotePlayback
@@ -186,7 +186,7 @@
 			<div class="flex flex-col max-w-[500px] mx-2 py-2">
 				<div class="flex justify-center">
 					<div class="flex flex-col">
-						<div class="text-center pb-1 text-sm"><Octo /></div>
+						<div class="text-center pb-1 text-sm"><DiffusionVLA /></div>
 						<div class="rounded-lg overflow-hidden relative">
 							<video
 								disableRemotePlayback
@@ -229,7 +229,7 @@
 			<div class="flex flex-col max-w-[500px] mx-2 py-2">
 				<div class="flex justify-center">
 					<div class="flex flex-col">
-						<div class="text-center pb-1 text-sm"><Octo /></div>
+						<div class="text-center pb-1 text-sm"><DiffusionVLA /></div>
 						<div class="rounded-lg overflow-hidden relative">
 							<video
 								disableRemotePlayback
