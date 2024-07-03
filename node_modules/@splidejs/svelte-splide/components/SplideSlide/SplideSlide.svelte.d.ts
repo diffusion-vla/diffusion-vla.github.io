@@ -1,0 +1,19 @@
+import { SvelteComponentTyped } from "svelte";
+declare const __propDef: {
+    props: {
+        [x: string]: any;
+        class?: string | undefined;
+    };
+    events: {
+        [evt: string]: CustomEvent<any>;
+    };
+    slots: {
+        default: {};
+    };
+};
+export declare type SplideSlideProps = typeof __propDef.props;
+export declare type SplideSlideEvents = typeof __propDef.events;
+export declare type SplideSlideSlots = typeof __propDef.slots;
+export default class SplideSlide extends SvelteComponentTyped<SplideSlideProps, SplideSlideEvents, SplideSlideSlots> {
+}
+export {};
