@@ -4,12 +4,16 @@
 	import { base } from '$app/paths';
 	import DiffusionVLA from './dvla.svelte';
 	import SideBySide from './SideBySide.svelte';
+	import GeneralizationVideo from './GeneralizationVideo.svelte';
 
 	let renderVideos = false;
 	function handleShow() {
 		setTimeout(() => {
 			renderVideos = true;
 		}, 1500);
+	}
+	function lazy(isOpen, path) {
+		return isOpen ? `${base}/videos/${path}.mp4` : '';
 	}
 </script>
 
@@ -51,7 +55,10 @@
 			<span class="px-2">Sergey Levine<sup>1</sup></span>
 		</div> -->
 		<div class="flex justify-center mt-4 mx-2 text-center">
-			*denotes equal contribution, listed in alphabetical order
+			*denotes equal contribution, listed in alphabetical order.
+		</div>
+		<div class="flex justify-center mt-4 mx-2 text-center">
+			This work was done during Junjie Wen's internship in Midea Group.
 		</div>
 		<div class="flex justify-center flex-wrap mt-4">
 			<span class="px-4">1. Midea Group</span>
@@ -107,10 +114,10 @@
 <!-- content column again -->
 <div class="max-w-6xl w-full px-2 pt-4 mx-auto">
 	<!-- intro and teaser -->
-	<p class="mt-8 text-l">
+	<p class="mt-8 text-l text-center text-justify">
 		In real-world scenarios, data collection could be costly and labor intensive, making training a multitasking robot model 
 		particularly challenging when the in-domain data is limited. Given recent advances in Multimodal Models and their power 
-		to extrapolate on out-of-domain, this paper introduces efficient vision-language-action models (<DiffusionVLA />) 
+		to extrapolate on out-of-domain, this paper introduces efficient vision-language-action models (<DiffusionVLA/>) 
 		for robotics manipulation. It is a general framework to learn visuomotor policy via end-to-end training by composing a 
 		pre-trained vision-language model with policy networks. Our framework highlights three crucial components: (1) Initializing 
 		policy backbone with a pre-trained multimodal model, (2) employing the LoRA fine-tuning method, in contrast to full-weight 
@@ -120,16 +127,29 @@
 		by simply leveraging the pretrained multimodal models with a very small number of trainable parameters, MuRo obtains a 
 		number of merits that previous approaches can not compete, including its strong generalization in terms of language instruction, 
 		novel objects, unseen positions, object appearance, background, and environmental change. We also demonstrate that, as the 
-		model size increases, <DiffusionVLA />not only achieves enhanced performance but also gains the capacity to accommodate more data. 
+		model size increases, <DiffusionVLA/>not only achieves enhanced performance but also gains the capacity to accommodate more data. 
 		For instance, in our real-world experiments, MuRo outperforms the Diffusion Policy with an average improvement of 43%. 
 		As we continue to scale up the model, this performance gap widens further, reaching 62%. We believe that MuRo offers an 
 		interesting perspective on utilizing pre-trained multimodal models for policy learning.
 	</p>
-	<!-- <img src="{base}/framework.png" alt="teaser" class="w-full mt-16 px-2 md:px-16" /> -->
+	<div class="flex justify-center items-center mt-2">
+		<video
+			muted
+			webkit-playsinline
+			playsinline
+			loop
+			autoplay
+			src={lazy(true, 'framework')}
+			class="w-80% h-auto"
+		/>
+	</div>
+	
 
 	<!-- the model -->
-	<h2 class="text-4xl mt-16">The Model</h2>
-	<p class="mt-8">
+	<h2 class="text-4xl mt-16 underline">Model Architecture</h2>
+	<img src="{base}/framework.png" alt="teaser" class="w-full mt-16 px-2 md:px-16" />
+
+	<p class="mt-8 text-center text-justify">
 		The design of the DiffusionVLA model emphasizes flexibility and scale: the model is designed to support
 		a variety of commonly used robots, sensor configurations, and actions, while providing a generic
 		and scalable recipe that can be trained on large amounts of data. DiffusionVLA supports both natural
@@ -140,22 +160,19 @@
 		make DiffusionVLA a flexible and broadly applicable generalist robotic policy that can be utilized for a
 		variety of downstream robotics applications and research projects.
 
-		<img src="{base}/framework.png" alt="model" class="w-full mt-16 px-2 md:px-16" />
+		<!-- <img src="{base}/framework.png" alt="model" class="w-full mt-16 px-2 md:px-16" /> -->
 	</p>
 
 	<!-- the data -->
-	<h2 class="text-4xl mt-16">The Data</h2>
-	<!-- <p class="mt-8">
-		We train DiffusionVLA on a mixture of 25 datasets from the Open X-Embodiment Dataset, a diverse
-		collection of robot learning datasets. Our training mixture includes data from a variety of
-		robot embodiments, scenes, and tasks. These datasets are heterogeneous not just in terms of the
-		robot type, but also in the sensors (e.g., including or not including wrist cameras) and labels
-		(e.g., including or not including language instructions).
-		<img src="{base}/sampling_weights.jpg" alt="model" class="w-3/4 px-2 md:w-1/2 mt-10 mx-auto" />
-	</p> -->
+	<h2 class="text-4xl mt-16 underline">Task Suite</h2>
+
+	<p class="mt-8">
+		We design five tasks in single arm setup and three tasks in bimanual tasks.
+		<img src="{base}/task_suite.png" alt="model" class="w-full mt-5 px-2 md:px-16" />
+	</p>
 
 	<!-- the results -->
-	<h2 class="text-4xl mt-16">The Results</h2>
+	<h2 class="text-4xl mt-16 underline">Experiments Results</h2>
 	<!-- <p class="mt-8">
 		We evaluate DiffusionVLA on 9 real robot setups across 4 institutions. Our evaluations capture diverse
 		object interactions (e.g., "WidowX BridgeV2"), long task horizons (e.g., "Stanford Coffee") and
@@ -168,93 +185,135 @@
 	</p> -->
 
 	<div class="flex flex-wrap gap-y-4 justify-center mt-16">
-		<table class="mr-2 md:mr-4 border-collapse text-center text-xs">
+		<table class="mr-2 md:mr-4 border-collapse text-center text-L">
+			<caption>Comparing MuRo with Diffusion Policy, IBC, and VINN in <strong>simulation</strong>. We report the average success rate on multiple tasks. We use MuRo-L as our method.</caption>
 			<thead>
-				<tr>
-					<th colspan="4" class="text-lg">Zero-shot</th>
-				</tr>
-				<tr class="border-b border-t-2 border-black">
-					<th />
-					<th>WidowX</th>
-					<th>UR5</th>
-					<th>RT-1 Robot</th>
-				</tr>
+			  <tr class="border-t border-t-2 border-black">
+				<th></th>
+				<th>Franka Kitchen</th>
+				<th colspan="4" style="border-left: 1px solid black;">MetaWorld (50 tasks)</th>
+				<th></th>
+			  </tr>
+			  <tr class="border-b border-black">
+				<th>Model / Tasks</th>
+				<th>10 Tasks</th>
+				<th style="border-left: 1px solid black;">Easy (28)</th>
+				<th>Medium (11)</th>
+				<th>Hard (6)</th>
+				<th >Very Hard (5)</th>
+				<th style="border-left: 1px solid black;">Avg.</th>
+			  </tr>
 			</thead>
 			<tbody>
-				<tr class="md:border-b-8 md:border-b-transparent">
-					<td>RT-1-X</td>
-					<td>0.20</td>
-					<td>0.35</td>
-					<td>0.60</td>
-				</tr>
-				<tr class="md:border-b-8 md:border-b-transparent">
-					<td>RT-2-X</td>
-					<td class="font-bold">0.50</td>
-					<td>&mdash;</td>
-					<td class="font-bold">0.85</td>
-				</tr>
-				<tr class="border-b-2 border-black font-bold">
-					<td><DiffusionVLA /></td>
-					<td>0.50</td>
-					<td>0.70</td>
-					<td class="font-normal">0.80</td>
-				</tr>
+			  <tr class="md:border-b-8 md:border-b-transparent">
+				<td>Diffusion Policy</td>
+				<td>53.2</td>
+				<td style="border-left: 1px solid black;">23.1</td>
+				<td>10.7</td>
+				<td>1.9</td>
+				<td>6.1</td>
+				<td style="border-left: 1px solid black;">19.0</td>
+			  </tr>
+			  <tr class="md:border-b-8 md:border-b-transparent">
+				<td>IBC</td>
+				<td>32.1</td>
+				<td style="border-left: 1px solid black;">0</td>
+				<td>0</td>
+				<td>0</td>
+				<td>0</td>
+				<td style="border-left: 1px solid black;">6.4</td>
+			  </tr>
+			  <tr class="md:border-b-8 md:border-b-transparent">
+				<td>VINN</td>
+				<td>19.6</td>
+				<td style="border-left: 1px solid black;">0</td>
+				<td>0</td>
+				<td>0</td>
+				<td>0</td>
+				<td style="border-left: 1px solid black;">3.9</td>
+			  </tr>
+			  <tr class="border-b-2 border-black font-bold">
+				<td><DiffusionVLA />-L</td>
+				<td style="background-color: AliceBlue;"><strong>77.6</strong></td>
+				<td style="background-color: AliceBlue; border-left: 1px solid black;"><strong>39.7</strong></td>
+				<td style="background-color: AliceBlue;"><strong>21.5</strong></td>
+				<td style="background-color: AliceBlue;"><strong>11.4</strong></td>
+				<td style="background-color: AliceBlue;"><strong>15.8</strong></td>
+				<td style="background-color: AliceBlue; border-left: 1px solid black;"><strong>34.7</strong></td>
+			  </tr>
 			</tbody>
-		</table>
-		<table class="ml-2 md:ml-4 border-collapse text-center md:text-xs text-[0.5rem]">
+		  </table>
+		  <table class="mr-2 md:mr-4 border-collapse text-center text-L">
+			<caption>
+			  <strong>Quantitative results in real-world experiments.</strong> We report the average success rate across multiple tasks and the count of trainable parameters for all models.
+			</caption>
 			<thead>
-				<tr>
-					<th colspan="8" class="text-lg">Finetuning</th>
-				</tr>
-				<tr class="border-b border-t-2 border-black">
-					<th />
-					<th>CMU Baking</th>
-					<th>Stanford Coffee</th>
-					<th>Berkeley Peg Insert<sup>*</sup></th>
-					<th>Berkeley Pick-Up<sup>†</sup></th>
-					<th>Berkeley Bimanual<sup>†</sup></th>
-					<th>Berkeley Coke</th>
-					<th>Average</th>
-				</tr>
+			  <tr class="border-t border-t-2 border-black">
+				<th></th>
+				<th>Trainable </th>
+				<th colspan="5" style="border-left: 1px solid black;">RealWorld(5 tasks)</th>
+				<th></th>
+			  </tr>
+			  <tr class="border-b border-t-1 border-black">
+				<th>Model / Tasks</th>
+				<th>Parameters</th>
+				<th style="border-left: 1px solid black;">place tennis</th>
+				<th>flip mug</th>
+				<th>stack cubes</th>
+				<th>close drawer</th>
+				<th>open box</th>
+				<th style="border-left: 1px solid black;">Avg.</th>
+			  </tr>
 			</thead>
 			<tbody>
-				<tr class="md:border-b-8 md:border-b-transparent">
-					<td>From Scratch</td>
-					<td>0.25</td>
-					<td>0.45</td>
-					<td>0.10</td>
-					<td>0.00</td>
-					<td>0.20</td>
-					<td>0.20</td>
-					<td>0.20</td>
-				</tr>
-				<tr class="md:border-b-8 md:border-b-transparent">
-					<td><a href="https://eai-vc.github.io/">VC-1</a></td>
-					<td>0.30</td>
-					<td>0.00</td>
-					<td>0.05</td>
-					<td>0.00</td>
-					<td>0.50</td>
-					<td>0.10</td>
-					<td>0.15</td>
-				</tr>
-				<tr class="border-b-2 border-black font-bold">
-					<td><DiffusionVLA /></td>
-					<td>0.50</td>
-					<td>0.75</td>
-					<td>0.70</td>
-					<td>0.60</td>
-					<td>0.80</td>
-					<td>1.00</td>
-					<td>0.72</td>
-				</tr>
+			  <tr class="md:border-b-8 md:border-b-transparent">
+				<td>Diffusion Policy</td>
+				<td>111M</td>
+				<td style="border-left: 1px solid black;">10</td>
+				<td>25</td>
+				<td>0</td>
+				<td>70</td>
+				<td>50</td>
+				<td style="border-left: 1px solid black;">31</td>
+			  </tr>
+			  <tr class="md:border-b-8 md:border-b-transparent">
+				<td><DiffusionVLA/>-S</td>
+				<td>101M</td>
+				<td style="border-left: 1px solid black;">10</td>
+				<td>0</td>
+				<td>5</td>
+				<td>60</td>
+				<td>35</td>
+				<td style="border-left: 1px solid black;">22</td>
+			  </tr>
+			  <tr class="md:border-b-8 md:border-b-transparent">
+				<td><DiffusionVLA/>-B</td>
+				<td>138M</td>
+				<td style="border-left: 1px solid black;">70</td>
+				<td>75</td>
+				<td>70</td>
+				<td>80</td>
+				<td>75</td>
+				<td style="border-left: 1px solid black;">74</td>
+			  </tr>
+			  <tr class="border-b-2 border-black font-bold">
+				<td><strong><DiffusionVLA/>-L</strong></td>
+				<td>143M</td>
+				<td style="border-left: 1px solid black; background-color: AliceBlue;"><strong>90</strong></td>
+				<td style="background-color: AliceBlue;"><strong>100</strong></td>
+				<td style="background-color: AliceBlue;"><strong>100</strong></td>
+				<td style="background-color: AliceBlue;"><strong>90</strong></td>
+				<td style="background-color: AliceBlue;"><strong>85</strong></td>
+				<td style="background-color: AliceBlue; border-left: 1px solid black;"><strong>93</strong></td>
+			  </tr>
 			</tbody>
-		</table>
+		  </table>
+		  
 	</div>
-	<div class="mt-2 flex justify-center text-[0.5rem] md:text-sm">
+	<!-- <div class="mt-2 flex justify-center text-[0.5rem] md:text-sm">
 		<div class="px-4"><sup>*</sup>New observation input (force-torque proprioception)</div>
 		<div class="px-4"><sup>†</sup>New action space (joint position control)</div>
-	</div>
+	</div> -->
 
 	<!-- <p class="mt-8">
 		Out-of-the-box, DiffusionVLA can control multiple robots in environments from the pretraining data. When
@@ -281,19 +340,18 @@
 		problems that go beyond a single camera input and end-effector position control.
 	</p> -->
 
-	<SideBySide />
-
+	<!-- <SideBySide /> -->
+	<GeneralizationVideo />
 	<!-- citation -->
-	<!-- <h2 class="text-4xl mt-16">Citation</h2>
+	<h2 class="text-4xl mt-16 underline">Citation</h2>
 	<p class="mt-8">Please use the following BibTeX entry to cite this work:</p>
 	<pre class="mt-4 overflow-x-scroll bg-slate-100 p-8">
-{`@inproceedings{octo_2023,
-    title={DiffusionVLA: An Open-Source Generalist Robot Policy},
-    author = {{DiffusionVLA Model Team} and Dibya Ghosh and Homer Walke and Karl Pertsch and Kevin Black and Oier Mees and Sudeep Dasari and Joey Hejna and Charles Xu and Jianlan Luo and Tobias Kreiman and {You Liang} Tan and Lawrence Yunliang Chen and Pannag Sanketi and Quan Vuong and Ted Xiao and Dorsa Sadigh and Chelsea Finn and Sergey Levine},
-    booktitle = {Proceedings of Robotics: Science and Systems},
-    address  = {Delft, Netherlands},
-    year = {2024},
-}`}</pre> -->
+{`@inproceedings{DVLA-2024,
+    title={DiffusionVLA: Aligning Vision-Language Models with Diffusion Policy for Visuomotor Learning},
+    author = {Junjie Wen},
+    booktitle = {arxiv},
+	year = {2024},
+}`}</pre>
 </div>
 
 <style>
