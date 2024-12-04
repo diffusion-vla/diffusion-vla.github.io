@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <meta name="description" content="DESCRIPTION META TAG">
+  <meta property="og:title" content="SOCIAL MEDIA TITLE TAG"/>
+  <meta property="og:description" content="SOCIAL MEDIA DESCRIPTION TAG TAG"/>
+  <meta property="og:url" content="URL OF THE WEBSITE"/>
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+  <meta property="og:image" content="static/image/your_banner_image.png" />
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+
+
+  <meta name="twitter:title" content="TWITTER BANNER TITLE META TAG">
+  <meta name="twitter:description" content="TWITTER BANNER DESCRIPTION META TAG">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+  <meta name="twitter:image" content="static/images/your_twitter_banner_image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="KEYWORDS SHOULD BE PLACED HERE">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title>DiffusionVLA: Scaling Robot Foundation Models via Unified Diffusion and Autoregression</title>
+  <link rel="icon" type="image/x-icon" href="static/images/scatter_eva_3.svg">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+  rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+
+    <!-- Splide CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/splidejs/3.6.12/css/splide.min.css">
+    <link rel="stylesheet" href="components/carousel-component.css">
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('header.html')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then(html => {
+          document.getElementById('header').innerHTML = html;
+        })
+        .catch(error => {
+          console.error('Error loading header:', error);
+        });
+    });
+
+</script>
+<script src="components/carousel-component.js"></script>
+<script>
+
+const videoData = {
+    carousel1: [
+        { video: "static/videos/origin_tasks/pick_bread_reason.mp4", label: null, speed: "1x" },
+        { video: "static/videos/origin_tasks/open_box_reason.mp4", label: null, speed: "1x" },
+        { video: "static/videos/origin_tasks/flip_left_pot_reason.mp4", label: null, speed: "1x" },
+        { video: "static/videos/origin_tasks/pick_tape_reason.mp4", label: null, speed: "1x" },
+        { video: "static/videos/origin_tasks/pick_pot_reason.mp4", label: null, speed: "1x" },
+        { video: "static/videos/origin_tasks/cube_to_blue_box_reason.mp4", label: null, speed: "1x" },
+        { video: "static/videos/origin_tasks/cube_to_yellow_box_reason.mp4", label: null, speed: "1x" },
+        { video: "static/videos/origin_tasks/cup_to_down_plate_reason.mp4", label: null, speed: "1x" },
+        { video: "static/videos/origin_tasks/cup_to_up_plate_reason.mp4", label: null, speed: "1x" },
+        { video: "static/videos/origin_tasks/flip_right_pot_reason.mp4", label: null, speed: "1x" }
+    ],
+    carousel2: [
+        { video: "static/videos/visual_generalization/pick_tape_new.mp4", label: "Unseen object: tape -> shorter tape", speed: "1x" },
+        { video: "static/videos/visual_generalization/cup_to_up_plate_light2.mp4", label: "Distracting light", speed: "1x" },
+        { video: "static/videos/visual_generalization/open_box_peach.mp4", label: "Unseen object: cube -> peach", speed: "1x" },
+        { video: "static/videos/visual_generalization/cube_to_left_box_bg.mp4", label: "Unseen background", speed: "1x" },
+        { video: "static/videos/visual_generalization/cup_to_plate_pot.mp4", label: "Unseen object: cup -> pot", speed: "1x" },
+        { video: "static/videos/visual_generalization/cup_to_up_plate_light.mp4", label: "Distracting light", speed: "1x" },
+        { video: "static/videos/visual_generalization/flip_left_pot_distractor.mp4", label: "Distractors", speed: "1x" },
+        { video: "static/videos/visual_generalization/flip_right_pot_distractor.mp4", label: "Distractors", speed: "1x" },
+        { video: "static/videos/visual_generalization/cube_to_right_box_bg.mp4", label: "Unseen background", speed: "1x" },
+        { video: "static/videos/visual_generalization/open_box_distractor.mp4", label: "Distractors", speed: "1x" },
+        { video: "static/videos/visual_generalization/pick_tape_with_distractor1.mp4", label: "Distractors", speed: "1x"},
+        { video: "static/videos/visual_generalization/pick_tape_with_distractor2.mp4", label: "Distractors", speed: "1x" }
+    ],
+    carousel3: [
+        { video: "static/videos/factory_sorting_reasoning/factory_sorting_zzy_2/clutter_mixed_fsort_3x.mp4", label: "Clutter Mixed", speed: "3x" },
+        { video: "static/videos/factory_sorting_reasoning/factory_sorting_zzy_2/clutter_seen_fsort_2x_r.mp4", label: "Clutter Seen", speed: "2x" },
+        { video: "static/videos/factory_sorting_reasoning/1_factory_sorting_5cars_2x/1_factory_sorting_5cars_2x.mp4", label: "Seen", speed: "2x" },
+        { video: "static/videos/factory_sorting_reasoning/1_factory_sorting_5cars_2x/1_factory_sorting_toys_1x.mp4", label: "Seen", speed: "1x" },
+        { video: "static/videos/factory_sorting_reasoning/1_factory_sorting_5cars_2x/2_factory_sorting_car_hexkey_1.5x.mp4", label: "Seen", speed: "1.5x" },
+        { video: "static/videos/factory_sorting_reasoning/1_factory_sorting_5cars_2x/4_mixed_fsort_1.5x.mp4", label: "Seen", speed: "1.5x" },
+        { video: "static/videos/factory_sorting_reasoning/factory_sorting_zzy/2_factory_sorting_2x.mp4", label: "Seen", speed: "2x" },
+        { video: "static/videos/factory_sorting_reasoning/factory_sorting_zzy/2_factory_sorting_3cars_2x.mp4", label: "Seen", speed: "2x" },
+        { video: "static/videos/factory_sorting_reasoning/factory_sorting_zzy/3_factory_sorting_2x.mp4", label: "Seen", speed: "2x" },
+        { video: "static/videos/factory_sorting_reasoning/factory_sorting_zzy/4_factory_sorting_1x.mp4", label: "Seen", speed: "1x" },
+        { video: "static/videos/factory_sorting_reasoning/factory_sorting_zzy_2/3_mixed_fsort_1x.mp4", label: "Mixed", speed: "1x" },
+        { video: "static/videos/factory_sorting_reasoning/factory_sorting_zzy_2/3_mixed_fsort_2_1x.mp4", label: "Mixed", speed: "2x" },
+        { video: "static/videos/factory_sorting_reasoning/factory_sorting_zzy_2/5_mixed_fsort_2x.mp4", label: "Mixed", speed: "2x" },
+    ],
+    carousel4: [
+        { video: "static/videos/factory_sorting_reasoning/1_factory_sorting_5cars_2x/aloha1.mp4", label: null, speed: "5x" },
+        { video: "static/videos/factory_sorting_reasoning/1_factory_sorting_5cars_2x/aloha2.mp4", label: null, speed: "5x" },
+        { video: "static/videos/factory_sorting_reasoning/1_factory_sorting_5cars_2x/aloha3.mp4", label: null, speed: "5x" },
+        { video: "static/videos/factory_sorting_reasoning/1_factory_sorting_5cars_2x/aloha4.mp4", label: null, speed: "5x" },
+    ]
+};
+
+  document.addEventListener('DOMContentLoaded', function () {
+    new VideoCarousel('#carousel1', videoData.carousel1, {}, false);
+    new VideoCarousel('#carousel2', videoData.carousel2, {}, true);
+    new VideoCarousel('#carousel3', videoData.carousel3, {}, true);
+    new VideoCarousel('#carousel4', videoData.carousel4, {}, false);
+
+  });
+</script>
+</head>
+
+<body>
+    <div id="header">
+        <!-- header.html 将被加载到这里 -->
+    </div>
+
+  <section class="hero" style="padding-top: 0%;">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+
+            <h1 class="title is-1 publication-title" style="display: flex; align-items: center;">
+              <span style="margin-left: 1rem;">Scaling Robot Foundation Models via Unified Diffusion and Autoregression</span>
+            </h1>
+              <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="px-2"> Junjie Wen*<sup>,1,2</sup> </span>
+              <span class="px-2"> Minjie Zhu*<sup>1,2</sup> </span>
+              <span class="px-2"> Yichen Zhu*<sup>,1</sup> </span>
+              <span class="px-2"> Zhibin Tang<sup>1</sup> </span>
+              <span class="px-2">Jinming Li<sup>1,3</sup></span>
+              <span class="px-2">Chengmeng Li<sup>1,3</sup></span>
+              <span class="px-2"> Zhongyi Zhou<sup>1,2</sup> </span>
+              <span class="px-2">Xiaoyu Liu<sup>1,3</sup></span>
+              <br>
+              <span class="px-2">Chaomin Shen<sup>2</sup></span>
+              <span class="px-2">Yaxin Peng<sup>3</sup></span>
+              <span class="px-2">Feifei Feng<sup>1</sup></span>
+                  </div>
+
+                  <div class="is-size-5 publication-authors">
+                    <span style="color: rgb(145, 143, 143);" class="px-4">1. Midea Group</span>
+                    <span style="color: rgb(145, 143, 143);" class="px-4">2. East China Normal University</span>
+                    <span style="color: rgb(145, 143, 143);" class="px-4">3. Shanghai University</span>
+                    <span style="color: rgb(106, 101, 101);" class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution,listed in alphabetical order.This work was done during Junjie Wen's internship in Midea Group.</small></span>
+
+                  </div>
+
+                  <div class="column has-text-centered">
+                    <div class="publication-links">
+                         <!-- Arxiv PDF link -->
+                      <span class="link-block">
+                        <a href="https://diffusion-vla.github.io" target=""
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span>Paper</span>
+                      </a>
+                    </span>
+
+
+                  <!-- Github link -->
+                  <span class="link-block">
+                    <a href="https://diffusion-vla.github.io"
+                       class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                            <i class="fab fa-github"></i>
+                        </span>
+                        <span>code</span>
+                    </a>
+                </span>
+                
+
+                <!-- ArXiv abstract Link -->
+                <span class="link-block">
+                  <a href="https://diffusion-vla.github.io" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Teaser video-->
+<section class="hero teaser">
+    <div class="container is-max-desktop video-container">
+      <div class="hero-body">
+        <video poster="" id="tree" autoplay muted loop style="
+          width: 800px;
+          height: 600px;  /* 设置固定高度 */
+          object-fit: cover;  /* 覆盖模式,会裁剪掉多余部分 */
+          object-position: center;  /* 居中裁剪 */
+        ">
+          <source src="static/videos/framework_gif.mp4" type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">
+        </h2>
+      </div>
+    </div>
+</section>
+  <!-- End teaser video -->
+
+
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+            <p>
+                In this paper, we present <span class="method-name">DiVLA</span>, a novel framework that seamlessly combines the autoregression model with the diffusion model for learning visuomotor policy. Central to our approach is a next-token prediction objective, enabling the model to reason effectively over the user's query in the context of current observations. Subsequently, a diffusion model is attached to generate robust action outputs. To enhance policy learning through self-reasoning, we introduce a novel reasoning injection module that integrates reasoning phrases directly into the policy learning process. The whole framework is simple and flexible, making it easy to deploy and upgrade.
+                </p>
+                
+            <p>
+            We conduct extensive experiments using multiple real robots to validate the effectiveness of <span class="method-name">DiVLA</span>. Our tests include a challenging factory sorting task, where <span class="method-name">DiVLA</span> successfully categorizes objects, <strong>including those not seen during training</strong>. We observe that the reasoning module enhances interpretability, allowing observers to understand the model's thought process and identify potential causes of policy failures. Additionally, we test <span class="method-name">DiVLA</span> on a zero-shot bin-picking task, achieving <strong>63.7% accuracy on 102 previously unseen objects</strong>. Our method demonstrates robustness to visual changes, such as distractors and new backgrounds, and easily adapts to new embodiments. Furthermore, <span class="method-name">DiVLA</span> can follow novel instructions and retain conversational ability. Notably, <span class="method-name">DiVLA</span> is data-efficient and fast at inference; our smallest <span class="method-name">DiVLA</span>-2B runs <strong>82Hz on a single A6000 GPU</strong> and can train from scratch on less than 50 demonstrations for a complex task. Finally, we scale the model from 2B to 72B parameters, showcasing improved generalization capabilities with increased model size.
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser" style="padding-top: 20px;"></section>
+  <div style="text-align: center; ">
+    <h2 class="title is-3">Demos on Challenging Tasks</h2>
+    <h3 style="color: rgb(140, 143, 144); margin-bottom: 10px; font-size: 1.5rem; font-weight: bold;">1.Factory Sorting</h3>
+    <h2 class="subtitle has-text-centered">The instruction of factory sorting is:<span style="color: #c45161; font-style: italic;">Sort all the items on the right panel.</span> <span style="color: #1982c4;font-style: italic; font-weight: 900;">Blue</span> means reasoning generated by our model.
+    </h2>
+    <div id="carousel3"></div>
+    <h3 style="color: rgb(140, 143, 144); margin-top: 10px; font-size: 1.5rem; font-weight: bold;">2.Bussing Table</h3>
+    <h2 class="subtitle has-text-centered">The instruction of Bussing table is:<span style="color: #c45161; font-style: italic;">Sort the tablewares and rubbish on the table.</span> <span style="color: #1982c4;font-style: italic; font-weight: 900;">Blue</span> means reasoning generated by our model.
+
+    <div id="carousel4" style="margin-top: 10px;"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/splidejs/3.6.12/js/splide.min.js"></script>
+</section>
+
+<section class="hero teaser" style="padding-top: 20px;">
+  <div style="text-align: center; ">
+    <h2 class="title is-3">Demos on Multi-Tasks & Visual Generalization</h2>
+    <h2 class="subtitle has-text-centered"><span style="color: #c45161; font-style: italic; font-weight: 900;">Red</span> means instructions. <span style="color: #1982c4;font-style: italic; font-weight: 900;">Blue</span> means reasoning generated by our model.
+    <div id="carousel1"></div>
+    <div id="carousel2" style="margin-top: 30px;"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/splidejs/3.6.12/js/splide.min.js"></script>
+</section>
+
+<section class="hero teaser" style="padding-top: 20px;">
+  <div style="text-align: center; ">
+    <h2 class="title is-3">Environmental Setup</h2>
+
+      </div>
+  <div class="container is-max-desktop" style="text-align: center; display: flex; justify-content: space-around; align-items: center; padding-top: 10px;">
+    <div class="hero-body" style="flex: 1;">
+      <img style="width: 1000px; height: auto;" src="static/images/divla_franka_setting.png" alt="teaser" />
+      <h3 class="subsubtitle has-text-centered">
+        <strong>Setup for the Franka Robot and Experimental Configuration for Factory Sorting</strong>. <strong>Left:</strong> For factor sorting tasks, (a) 
+        The target sorting box is divided into four distinct sectors, each designated for one of the following categories: stuffed toys, 
+        hex keys, knit gloves, and toy cars, (c) The seen objects in the train data, (d) mixing the seen and unseen object for evaluation, 
+        (e) cluttered scene for seen objects, (f) cluttered scene for mixing seen and unseen objects. <strong>Middle:</strong> We use a Franka robot arm equipped
+        with two external Zed cameras and a Realsense 435i wrist camera. <strong>Right:</strong> The setup for zero-shot bin picking.
+      </h3>
+    </div>
+    <div class="hero-body" style="flex: 1;">
+      <img style="width: 600px; height: auto;" src="static/images/divla_aloha.png" alt="teaser" />
+      <h3 class="subsubtitle has-text-centered">
+        (a) Environmental setup for the bimanual robot, featuring three camera views; (b) Table bussing setup, with a 
+        trash bin positioned on the right side and a panel on the left. The task requires placing all tableware on the 
+        panel and all trash in the trash bin; (c-f) All tableware and trash items used in the bussing table task evaluation. 
+      </h3>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div style="text-align: center; ">
+    <h2 class="title is-3" >Experiments Results</h2>
+
+      </div>
+  <div class="container is-max-desktop" style="text-align: center;">
+    <div class="hero-body">
+      <img style="width: 80%;" src="static/images/bin_sorting_results.png" alt="teaser" />
+      <h2 class="subtitle has-text-centered"><strong>Experimental Results for Factory Sorting.</strong> We compared our DiVLA with Diffusion Policy, Octo, TinyVLA, and OpenVLA. DiVLA achieves the highest average success rate, outperforming the runner-up OpenVLA by 20.9%. Furthermore, DiVLA exhibits strong zero-shot capabilities for bin picking, demonstrating impressive capability in handling objects with varying shapes, heights, and orientations.
+      </h2>
+    </div>
+    <div class="hero-body">
+      <img style="width: 30%;" src="static/images/bin_picking.png" alt="teaser" />
+      <h2 class="subtitle has-text-centered"><strong>Zero-shot Bin Picking on 102 Unseen Objects.</strong> Our method outperforms the state-of-the-art robot foundation models by a large margin.
+      </h2>
+    </div>
+    <div class="hero-body">
+      <img style="width: 80%;" src="static/images/multitask.jpg" alt="teaser" />
+      <h2 class="subtitle has-text-centered"><strong>Experimental Results for Multi-Task Learning on Real Robot.</strong> We report the count of pre-trained trajectories. We also report the average success rate for evaluation on both in-distribution and out-of-distribution. Task 1: Select the appropriate object based on the user’s intent. Task 2: Upright the tipped-over pot. Task 3: Pick up the cube and place it into the [yellow/blue] box. Task 4: Place the cup onto the plate. Task 5: Place the cube into the box.
+      </h2>
+    </div>
+
+  </div>
+</section>
+<!--End BibTex citation -->
+
+
+<!--BibTex citation -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre>
+    <code>@article{wen2024diffusionvla,
+      title={DiffusionVLA: Scaling Robot Foundation Models via Unified Diffusion and Autoregression},
+      author={Wen, Junjie and Zhu, Minjie and Zhu, Yichen and Tang, Zhibin and Li, Jinming and Zhou, Zhongyi and Li, Chengmeng and Liu, Xiaoyu and Peng, Yaxin and Shen, Chaomin and Feng, Feifei},
+      journal={arXiv preprint arXiv:None},
+      year={2024}
+    }</code>,
+    <code>@article{wen2024tinyvla,
+      title={TinyVLA: Towards Fast, Data-Efficient Vision-Language-Action Models for Robotic Manipulation},
+      author={Wen, Junjie and Zhu, Yichen and Li, Jinming and Zhu, Minjie and Wu, Kun and Xu, Zhiyuan and Cheng, Ran and Shen, Chaomin and Peng, Yaxin and Feng, Feifei and others},
+      journal={arXiv preprint arXiv:2409.12514},
+      year={2024}
+    }</code></pre>
+  </div>
+</section>
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the  <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
+  <style>
+   
+    video, img {
+        width: 100%;
+        border-radius: 8px;
+    }
+    .wrapper {
+    position: relative;  /* 固定在屏幕上，滚动时不动 */
+    top: 0%;         /* 垂直居中 */
+    left: 40%;        /* 水平居中 */
+    transform: translate(-50%, -50%); /* 调整位置，使得真正居中 */
+    width: 300px;     /* 可以根据需求调整宽度 */
+    padding: 20px;    /* 内边距，给内容一些空间 */
+    }
+    .container {
+        max-width: 80%;
+        margin: auto;
+    }
+    .video-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+    .video-item {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px; /* 增加每个视频项之间的间距 */
+    }
+    .description {
+        width: 50%;
+        background-color: #ebf8ff;
+        padding: 15px;
+        border-radius: 5px;
+        margin-right: 20px;
+        margin-bottom: 20px; /* 增加描述框之间的间距 */
+    }
+    .video-container {
+        width: 45%;
+        position: relative;
+    }
+    video, img {
+        width: 100%;
+        border-radius: 8px;
+    }
+        .label {
+        position: absolute;
+        padding: 2px 5px;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 3px;
+        font-size: 12px;
+    }
+    .top-left {
+        top: 5px;
+        left: 5px;
+    }
+    .bottom-right {
+        bottom: 5px;
+        right: 5px;
+    }
+    .method-name {
+    font-style: italic;
+    /* 或者使用特定样式 */
+    color: #3b2c7c;  /* 使用主题色 */
+    font-weight: 500;
+    font-weight: bold;
+}
+
+    strong {
+        font-weight: bold;
+        /* 可选：添加强调色 */
+        color: #3600a2;
+    }
+
+    p {
+        line-height: 1.6;
+        margin-bottom: 1.5em;
+        text-align: justify;
+    }
+    /*设置framework gif的裁剪*/
+    .video-container {
+    max-width: 100%;  /* 调整容器宽度 */
+    margin: auto;
+    }
+
+    .video-container .hero-body {
+        padding: 0;  /* 移除内边距 */
+    }
+
+    .video-container video {
+        width: 100%;
+        display: block;
+        margin: 0 auto;
+    }
+
+</style>
+
+   
