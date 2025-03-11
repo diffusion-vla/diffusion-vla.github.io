@@ -141,7 +141,7 @@ const videoData = {
           <div class="column has-text-centered">
 
             <h1 class="title is-1 publication-title" style="display: flex; align-items: center;">
-              <span style="margin-left: 1rem;">Scaling Robot Foundation Models via Unified Diffusion and Autoregression</span>
+              <span style="margin-left: 1rem;">Autoregressive Reasoning and Diffusion Policies for Generalizable Vision-Language-Action Models</span>
             </h1>
               <div class="is-size-5 publication-authors">
               <!-- Paper authors -->
@@ -184,7 +184,7 @@ const videoData = {
 
                   <!-- Github link -->
                   <span class="link-block">
-                    <a href="https://diffusion-vla.github.io"
+                    <a href="javascript:void(0);" onclick="handleGithubClick(event)"
                        class="external-link button is-normal is-rounded is-dark">
                         <span class="icon">
                             <i class="fab fa-github"></i>
@@ -327,7 +327,7 @@ const videoData = {
     </div>
     <div class="hero-body">
       <img style="width: 80%;" src="static/images/multitask.jpg" alt="teaser" />
-      <h2 class="subtitle has-text-centered"><strong>Experimental Results for Multi-Task Learning on Real Robot.</strong> We report the count of pre-trained trajectories. We also report the average success rate for evaluation on both in-distribution and out-of-distribution. Task 1: Select the appropriate object based on the user’s intent. Task 2: Upright the tipped-over pot. Task 3: Pick up the cube and place it into the [yellow/blue] box. Task 4: Place the cup onto the plate. Task 5: Place the cube into the box.
+      <h2 class="subtitle has-text-centered"><strong>Experimental Results for Multi-Task Learning on Real Robot.</strong> We report the count of pre-trained trajectories. We also report the average success rate for evaluation on both in-distribution and out-of-distribution. Task 1: Select the appropriate object based on the user's intent. Task 2: Upright the tipped-over pot. Task 3: Pick up the cube and place it into the [yellow/blue] box. Task 4: Place the cup onto the plate. Task 5: Place the cube into the box.
       </h2>
     </div>
 
@@ -479,6 +479,51 @@ const videoData = {
         margin: 0 auto;
     }
 
+</style>
+
+<div id="redirectModal" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">
+      <p class="has-text-centered">Jumping to the code...(https://github.com/juruobenruo/DexVLA)</p>
+      <p class="has-text-centered" id="countdown">10</p>
+      <p class="has-text-centered">!!! Notice: We released the code of DexVLA, which is a more efficient and scalable work built on DiVLA. And the code of DexVLA is also available for training DiVLA. You can find more in above link.</p>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function handleGithubClick(event) {
+    event.preventDefault();
+    const modal = document.getElementById('redirectModal');
+    const countdownElement = document.getElementById('countdown');
+    modal.classList.add('is-active');
+    
+    let count = 10;
+    const countdown = setInterval(() => {
+      count--;
+      countdownElement.textContent = count;
+      if (count <= 0) {
+        clearInterval(countdown);
+        window.location.href = 'https://github.com/juruobenruo/DexVLA';
+      }
+    }, 1000);
+  }
+</script>
+
+<style>
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 6px;
+    text-align: center;
+  }
+  #countdown {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
 </style>
 
    
